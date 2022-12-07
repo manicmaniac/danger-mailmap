@@ -3,6 +3,7 @@ PATH
   specs:
     danger-mailmap (0.0.1)
       danger-plugin-api (~> 1.0)
+      mailmap (~> 0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -92,6 +93,7 @@ GEM
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9.7)
     lumberjack (1.2.8)
+    mailmap (0.1.0)
     method_source (1.0.0)
     multipart-post (2.2.3)
     nap (1.1.0)
