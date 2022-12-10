@@ -29,7 +29,7 @@ module Danger
     # Check whether if an author of each commits has proper email.
     #
     # @param [String] path Path to .mailmap file (default $GIT_WORK_TREE/.mailmap).
-    #
+    # @return [void]
     def check(path = '.mailmap')
       mailmap = Mailmap::Map.load(path)
       commits_by_emails
