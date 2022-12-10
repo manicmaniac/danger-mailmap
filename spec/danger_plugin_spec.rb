@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
+  include DangerPluginHelper
+
   define :be_a_hash_containing_exactly do |expected|
     match do |actual|
       expect(actual).to be_kind_of(Hash).and have_attributes(size: expected.size).and include expected
