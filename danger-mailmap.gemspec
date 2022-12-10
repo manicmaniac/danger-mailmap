@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'lib/mailmap/gem_version'
+require_relative 'lib/danger_mailmap/gem_version'
 
 Gem::Specification.new do |spec|
   spec.name = 'danger-mailmap'
-  spec.version = Mailmap::VERSION
+  spec.version = DangerMailmap::VERSION
   spec.authors = ['Ryosuke Ito']
   spec.email = ['rito.0305@gmail.com']
   spec.description = 'A Danger plugin to check if .mailmap has a canonical name of author and commiter'
