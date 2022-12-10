@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.version = DangerMailmap::VERSION
   spec.authors = ['Ryosuke Ito']
   spec.email = ['rito.0305@gmail.com']
-  spec.description = 'A Danger plugin to check if .mailmap has a canonical name of author and commiter'
+  spec.description = 'A Danger plugin to check if .mailmap has a canonical name of author and committer'
   spec.summary = spec.description
   spec.homepage = 'https://github.com/manicmaniac/danger-mailmap'
   spec.license = 'MIT'

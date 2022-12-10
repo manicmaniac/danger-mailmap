@@ -1,15 +1,32 @@
 # danger-mailmap
 
-A description of danger-mailmap.
+A Danger plugin to check if .mailmap has a canonical name of author and committer.
 
 ## Installation
 
-    $ gem install danger-mailmap
+```sh
+gem install danger-mailmap
+```
+
+Or write the following code in your Gemfile.
+
+```ruby
+gem 'danger-mailmap'
+```
 
 ## Usage
 
-    Methods and attributes from this plugin are available in
-    your `Dangerfile` under the `mailmap` namespace.
+The easiest way to use is just add this to your Dangerfile:
+
+```ruby
+mailmap.check
+```
+
+If your repository has a mailmap file located in the place other than `.mailmap`, you can pass the path as argument.
+
+```ruby
+mailmap.check '/path/to/mailmap'
+```
 
 ## Development
 
