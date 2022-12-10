@@ -1,5 +1,9 @@
 # danger-mailmap
 
+[![Test](https://github.com/manicmaniac/danger-mailmap/actions/workflows/test.yml/badge.svg)](https://github.com/manicmaniac/danger-mailmap/actions/workflows/test.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/0b6932dadcec9c9b8484/maintainability)](https://codeclimate.com/github/manicmaniac/danger-mailmap/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/0b6932dadcec9c9b8484/test_coverage)](https://codeclimate.com/github/manicmaniac/danger-mailmap/test_coverage)
+
 A Danger plugin to check if .mailmap has a canonical name of author and committer.
 
 ## Installation
