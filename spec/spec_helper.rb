@@ -3,11 +3,9 @@
 ROOT = File.expand_path('..', __dir__)
 $LOAD_PATH.unshift(File.join(ROOT, 'lib'), File.join(ROOT, 'spec'))
 
-require 'bundler/setup'
-require 'pry'
-
-require 'rspec'
 require 'danger'
+require 'pry'
+require 'rspec'
 
 # Use coloured output, it's the best.
 RSpec.configure do |config|
