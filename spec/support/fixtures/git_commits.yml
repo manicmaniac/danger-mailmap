@@ -1,0 +1,133 @@
+---
+- !ruby/object:Git::Object::Commit
+  base: &1 !ruby/object:Git::Base
+    logger:
+    working_directory: !ruby/object:Git::WorkingDirectory
+      path: "/tmp/danger-mailmap"
+    repository: !ruby/object:Git::Repository
+      path: "/tmp/danger-mailmap/.git"
+    index: !ruby/object:Git::Index
+      path: "/tmp/danger-mailmap/.git/index"
+    lib: !ruby/object:Git::Lib
+      git_dir: "/tmp/danger-mailmap/.git"
+      git_index_file: "/tmp/danger-mailmap/.git/index"
+      git_work_dir: "/tmp/danger-mailmap"
+      path:
+      logger:
+      git_system_env_variables:
+        GIT_DIR:
+        GIT_WORK_TREE:
+        GIT_INDEX_FILE:
+        GIT_SSH:
+  objectish: 1c71c76def92799a852c7a0180506b08d2810968
+  contents:
+  trees:
+  size:
+  sha: 1c71c76def92799a852c7a0180506b08d2810968
+  tree: !ruby/object:Git::Object::Tree
+    base: *1
+    objectish: a5ef6ac2569abc4982fccea03e863a1e39172aee
+    contents:
+    trees:
+    size:
+    sha:
+    mode:
+    blobs:
+  parents:
+  - !ruby/object:Git::Object::Commit
+    base: *1
+    objectish: 5db1634bce99094ed5d8966fce839309764970e9
+    contents:
+    trees:
+    size:
+    sha:
+    tree:
+    parents:
+    author:
+    committer:
+    message:
+  author: !ruby/object:Git::Author
+    name: Correct Name
+    email: correct@example.com
+    date: 2022-09-08 11:12:11.000000000 +09:00
+  committer: !ruby/object:Git::Author
+    name: Correct Name
+    email: correct@example.com
+    date: 2022-09-08 11:14:05.000000000 +09:00
+  message: Add lint workflow
+- !ruby/object:Git::Object::Commit
+  base: *1
+  objectish: 5db1634bce99094ed5d8966fce839309764970e9
+  contents:
+  trees:
+  size:
+  sha: 5db1634bce99094ed5d8966fce839309764970e9
+  tree: !ruby/object:Git::Object::Tree
+    base: *1
+    objectish: 032c796b30e93c41878aa219c6e6ce8c3f2cf5f2
+    contents:
+    trees:
+    size:
+    sha:
+    mode:
+    blobs:
+  parents:
+  - !ruby/object:Git::Object::Commit
+    base: *1
+    objectish: ca8af53aafde06c166fae251828a518cc5c38d3e
+    contents:
+    trees:
+    size:
+    sha:
+    tree:
+    parents:
+    author:
+    committer:
+    message:
+  author: !ruby/object:Git::Author
+    name: Correct Name
+    email: correct@example.com
+    date: 2022-09-08 11:03:06.000000000 +09:00
+  committer: !ruby/object:Git::Author
+    name: Wrong Name
+    email: wrong@example.com
+    date: 2022-09-08 11:12:20.000000000 +09:00
+  message: Add test workflow
+- !ruby/object:Git::Object::Commit
+  base: *1
+  objectish: ca8af53aafde06c166fae251828a518cc5c38d3e
+  contents:
+  trees:
+  size:
+  sha: ca8af53aafde06c166fae251828a518cc5c38d3e
+  tree: !ruby/object:Git::Object::Tree
+    base: *1
+    objectish: 15c5a8a780a5ecbe5e146877ae489686a9cfcbf3
+    contents:
+    trees:
+    size:
+    sha:
+    mode:
+    blobs:
+  parents:
+  - !ruby/object:Git::Object::Commit
+    base: *1
+    objectish: f297e099f0fb7d3d0fb035decf950c71a7213624
+    contents:
+    trees:
+    size:
+    sha:
+    tree:
+    parents:
+    author:
+    committer:
+    message:
+  author: !ruby/object:Git::Author
+    name: Wrong Name
+    email: wrong@example.com
+    date: 2022-09-08 11:10:40.000000000 +09:00
+  committer: !ruby/object:Git::Author
+    name: Wrong Name
+    email: wrong@example.com
+    date: 2022-09-08 11:12:20.000000000 +09:00
+  message: Do not specify platform

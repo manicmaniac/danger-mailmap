@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'mailmap'
+require 'set'
+
 module Danger
   # This is your plugin class. Any attributes or methods you expose here will
   # be available from within your Dangerfile.
@@ -19,19 +22,31 @@ module Danger
   # @tags monday, weekends, time, rattata
   #
   class DangerMailmap < Plugin
-    # An attribute that you can read/write from your Dangerfile
+    # Check whether if an author of each commits has proper email.
     #
-    # @return   [Array<String>]
-    attr_accessor :my_attribute
+    # @param [String] path Path to .mailmap file (default $GIT_WORK_TREE/.mailmap).
+    #
+    def check(path = '.mailmap')
+      mailmap = Mailmap::Map.load(path)
+      commits_by_emails
+        .reject { |email, _| mailmap.include_email?(email) }
+        .each do |email, commits|
+          revisions = commits.map(&:sha).join(', ')
+          warn("#{email} is not included in mailmap (#{revisions})")
+        end
+    end
 
-    # A method that you can call from your Dangerfile
-    # @return   [Array<String>]
-    #
-    def check
-      # github.branch_for_base
-      # github.branch_for_head
-      p git.commits
-      p github.branch_for_base
+    private
+
+    def commits_by_emails
+      commits_by_emails = Hash.new do |hash, key|
+        hash[key] = Set.new
+      end
+      git.commits.each do |commit|
+        commits_by_emails[commit.author.email] << commit
+        commits_by_emails[commit.committer.email] << commit
+      end
+      commits_by_emails
     end
   end
 end
