@@ -32,6 +32,16 @@ If your repository has a mailmap file located in the place other than `.mailmap`
 mailmap.check '/path/to/mailmap'
 ```
 
+If you want `danger-mailmap` to ignore a particular user regardless of mailmap, set `allowed_patterns`.
+
+```ruby
+mailmap.allowed_patterns = [
+  /.+@(users\.noreply\.)?github\.com/,
+  'good@example.com'
+]
+mailimap.check
+```
+
 ## Development
 
 1. Clone this repo
