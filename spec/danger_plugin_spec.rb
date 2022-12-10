@@ -92,6 +92,20 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
         )
       end
     end
+
+    context 'when an email matches allowed_patterns' do
+      before { mailmap.allowed_patterns = [/correct@.+/, 'wrong@example.com'] }
+
+      it 'warns nothing' do
+        mailmap.check(mailmap_file.path)
+        expect(dangerfile.status_report).to be_a_hash_containing_exactly(
+          errors: [],
+          markdowns: [],
+          messages: [],
+          warnings: []
+        )
+      end
+    end
   end
 
   describe '#commits_by_emails' do
