@@ -2,6 +2,7 @@
 
 describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
   include DangerPluginHelper
+  include FixtureHelper
 
   define :be_a_hash_containing_exactly do |expected|
     match do |actual|
@@ -11,11 +12,17 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
 
   let(:dangerfile) { testing_dangerfile }
   let(:mailmap) { dangerfile.mailmap }
-  let(:commits) { YAML.load_file("#{__dir__}/support/fixtures/git_commits.yml") }
+  let(:commits) do
+    YAML.safe_load(
+      load_fixture('git_commits.yml'),
+      aliases: true,
+      permitted_classes: [Time] + classes_in(Git, Git::Object)
+    )
+  end
 
   before do
     # example json: `curl -o github_pr.json https://api.github.com/repos/danger/danger-plugin-template/pulls/18`
-    pr_json = File.read("#{__dir__}/support/fixtures/github_pr.json")
+    pr_json = load_fixture('github_pr.json')
     allow(mailmap.github).to receive(:pr_json).and_return pr_json
     allow(mailmap.git).to receive(:commits).and_return commits
   end
