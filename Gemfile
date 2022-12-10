@@ -10,6 +10,7 @@ gem 'danger'
 gem 'danger-rubocop', require: false
 gem 'guard', require: false
 gem 'guard-rspec', require: false
+gem 'guard-rubocop', require: false
 gem 'rake'
 gem 'rspec'
 gem 'rubocop', require: false
