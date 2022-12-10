@@ -12,7 +12,13 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
 
   let(:dangerfile) { testing_dangerfile }
   let(:mailmap) { dangerfile.mailmap }
-  let(:commits) { YAML.load_file(fixture('git_commits.yml')) }
+  let(:commits) do
+    YAML.safe_load(
+      load_fixture('git_commits.yml'),
+      aliases: true,
+      permitted_classes: [Time] + classes_in(Git, Git::Object)
+    )
+  end
 
   before do
     # example json: `curl -o github_pr.json https://api.github.com/repos/danger/danger-plugin-template/pulls/18`
