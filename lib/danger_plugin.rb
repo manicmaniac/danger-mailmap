@@ -4,23 +4,22 @@ require 'mailmap'
 require 'set'
 
 module Danger
-  # This is your plugin class. Any attributes or methods you expose here will
-  # be available from within your Dangerfile.
+  # A Danger plugin to check if .mailmap has a canonical name of author and committer.
   #
-  # To be published on the Danger plugins site, you will need to have
-  # the public interface documented. Danger uses [YARD](http://yardoc.org/)
-  # for generating documentation from your plugin source, and you can verify
-  # by running `danger plugins lint` or `bundle exec rake spec`.
+  # @example Check all commits in the pull request against the top-level .mailmap.
   #
-  # You should replace these comments with a public description of your library.
+  #          mailmap.check
   #
-  # @example Ensure people are well warned about merging on Mondays
+  # @example Check against mailmap file in custom location with ignoring some users.
   #
-  #          my_plugin.warn_on_mondays
+  #          mailmap.allowed_patterns = [
+  #            /.+@(users\.noreply\.)?github\.com/,
+  #            'good@example.com'
+  #          ]
+  #          mailmap.check '/path/to/mailmap'
   #
   # @see  manicmaniac/danger-mailmap
-  # @tags monday, weekends, time, rattata
-  #
+  # @tags git, mailmap
   class DangerMailmap < Plugin
     # Regular expression patterns of email where `danger-mailmap` does not warn like allow-list.
     # If a string is set, it is considered as fixed pattern.
@@ -30,7 +29,7 @@ module Danger
     # Check whether if an author of each commits has proper email.
     #
     # @param [String] path Path to .mailmap file (default $GIT_WORK_TREE/.mailmap).
-    #
+    # @return [void]
     def check(path = '.mailmap')
       mailmap = Mailmap::Map.load(path)
       commits_by_emails
