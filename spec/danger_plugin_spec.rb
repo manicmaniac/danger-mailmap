@@ -25,9 +25,13 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
 
   before do
     # @see https://github.com/manicmaniac/danger-mailmap/pull/9
-    pr_json = load_fixture('github_pr.json')
+    pr_json = JSON.parse(load_fixture('github_pr.json'))
     allow(mailmap.github).to receive(:pr_json).and_return pr_json
     allow(mailmap.git).to receive(:commits).and_return commits
+    git_repo = instance_double(Danger::GitRepo)
+    allow(git_repo).to receive(:folder).and_return project_root_path.to_s
+    allow(git_repo).to receive(:exec).with('rev-parse --show-toplevel').and_return project_root_path.to_s
+    allow(mailmap.env).to receive(:scm).and_return git_repo
   end
 
   it 'is a plugin' do
@@ -60,9 +64,12 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
           errors: [],
           markdowns: [],
           messages: [],
-          warnings: [
-            "wrong@example.com is not included in mailmap (#{commits[0].sha}, #{commits[1].sha}, #{commits[2].sha})"
-          ]
+          warnings: a_collection_containing_exactly(
+            a_string_matching(%r{
+              `wrong@example\.com`\sis\snot\sincluded\sin\s<a\shref='https://github\.com/.+>mailmap.*</a>\s
+              \(#{commits[0].sha},\s#{commits[1].sha},\s#{commits[2].sha}\)
+            }x)
+          )
         )
       end
     end
