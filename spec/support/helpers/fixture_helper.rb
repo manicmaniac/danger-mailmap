@@ -3,6 +3,10 @@
 require 'pathname'
 
 module FixtureHelper
+  def project_root_path
+    Pathname.new('../../..').expand_path(__dir__)
+  end
+
   def fixtures_path
     Pathname.new('../fixtures').expand_path(__dir__)
   end
