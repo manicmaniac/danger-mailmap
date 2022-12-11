@@ -12,6 +12,9 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
 
   let(:dangerfile) { testing_dangerfile }
   let(:mailmap) { dangerfile.mailmap }
+
+  # Commits extracted from a real pull request.
+  # @see https://github.com/manicmaniac/danger-mailmap/pull/9
   let(:commits) do
     YAML.safe_load(
       load_fixture('git_commits.yml'),
@@ -21,7 +24,7 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
   end
 
   before do
-    # example json: `curl -o github_pr.json https://api.github.com/repos/danger/danger-plugin-template/pulls/18`
+    # @see https://github.com/manicmaniac/danger-mailmap/pull/9
     pr_json = load_fixture('github_pr.json')
     allow(mailmap.github).to receive(:pr_json).and_return pr_json
     allow(mailmap.git).to receive(:commits).and_return commits
@@ -48,21 +51,6 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
       end
     end
 
-    context 'when commits include unknown authors' do
-      it 'warns about each commit' do
-        mailmap.check(mailmap_file.path)
-        expect(dangerfile.status_report).to be_a_hash_containing_exactly(
-          errors: [],
-          markdowns: [],
-          messages: [],
-          warnings: [
-            "correct@example.com is not included in mailmap (#{commits[0].sha}, #{commits[1].sha})",
-            "wrong@example.com is not included in mailmap (#{commits[1].sha}, #{commits[2].sha})"
-          ]
-        )
-      end
-    end
-
     context 'when commits include both known authors and unknown authors' do
       let(:mailmap_contents) { 'Correct <correct@example.com>' }
 
@@ -73,7 +61,7 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
           markdowns: [],
           messages: [],
           warnings: [
-            "wrong@example.com is not included in mailmap (#{commits[1].sha}, #{commits[2].sha})"
+            "wrong@example.com is not included in mailmap (#{commits[0].sha}, #{commits[1].sha}, #{commits[2].sha})"
           ]
         )
       end
@@ -112,12 +100,10 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
     it 'aggregates commits by author emails and committer emails' do
       expect(mailmap.send(:commits_by_emails)).to be_a_hash_containing_exactly(
         'correct@example.com' => an_instance_of(Set) & contain_exactly(
-          an_object_having_attributes(sha: commits[0].sha),
-          an_object_having_attributes(sha: commits[1].sha)
+          *commits[1..3].map { |commit| an_object_having_attributes(sha: commit.sha) }
         ),
         'wrong@example.com' => an_instance_of(Set) & contain_exactly(
-          an_object_having_attributes(sha: commits[1].sha),
-          an_object_having_attributes(sha: commits[2].sha)
+          *commits[0..2].map { |commit| an_object_having_attributes(sha: commit.sha) }
         )
       )
     end
