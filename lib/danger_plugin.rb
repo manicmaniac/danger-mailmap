@@ -30,17 +30,31 @@ module Danger
     #
     # @param [String] path Path to .mailmap file (default $GIT_WORK_TREE/.mailmap).
     # @return [void]
-    def check(path = '.mailmap')
+    def check(path = nil)
+      path = path ? File.expand_path(path) : File.join(git_working_dir, '.mailmap')
       mailmap = Mailmap::Map.load(path)
       commits_by_emails
         .reject { |email, _| allowed_patterns_include?(email) || mailmap.include_email?(email) }
         .each do |email, commits|
           revisions = commits.map(&:sha).join(', ')
-          warn("#{email} is not included in mailmap (#{revisions})")
+          warn("#{email} is not included in #{link_to(path)} (#{revisions})")
         end
     end
 
     private
+
+    def git_working_dir
+      @git_working_dir ||= Dir.chdir(env.scm.folder) do
+        env.scm.exec('rev-parse --show-toplevel')
+      end
+    end
+
+    def link_to(path)
+      relative_path = Pathname.new(path).relative_path_from(git_working_dir).to_s
+      scm_plugin = @dangerfile.respond_to?(danger.scm_provider) ? @dangerfile.public_send(danger.scm_provider) : nil
+      method_name = %i[markdown_link html_link].detect { |name| scm_plugin.respond_to?(name) }
+      method_name ? scm_plugin.public_send(method_name, relative_path, full_path: false) : relative_path
+    end
 
     def commits_by_emails
       commits_by_emails = Hash.new do |hash, key|
