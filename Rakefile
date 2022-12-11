@@ -33,3 +33,11 @@ task :add_test_commits do
     sh(env, 'git', 'commit', '-m' "author: #{a_email}, committer: #{c_email}", '--allow-empty')
   end
 end
+
+file 'spec/support/fixtures/github_pr.json' do |file|
+  require 'json'
+  require 'open-uri'
+
+  json = URI.open('https://api.github.com/repos/manicmaniac/danger-mailmap/pulls/9').read
+  File.write(file.name, JSON.pretty_generate(JSON.parse(json)))
+end
