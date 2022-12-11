@@ -36,7 +36,7 @@ module Danger
       commits_by_emails
         .reject { |email, _| allowed_patterns_include?(email) || mailmap.include_email?(email) }
         .each { |email, commits| warn(format_warning(path, email, commits)) }
-        .empty? or message("See #{HOW_TO_FIX_URL} to know how to fix mailmap warnings.")
+        .empty? or markdown("See [the instruction](#{HOW_TO_FIX_URL}) to know how to fix mailmap warnings.")
     end
 
     private
