@@ -37,7 +37,7 @@ module Danger
         .reject { |email, _| allowed_patterns_include?(email) || mailmap.include_email?(email) }
         .each do |email, commits|
           revisions = commits.map(&:sha).join(', ')
-          warn("#{email} is not included in #{link_to(path)} (#{revisions})")
+          warn("`#{email}` is not included in #{link_to(path)} (#{revisions})")
         end
     end
 
