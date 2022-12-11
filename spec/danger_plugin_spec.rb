@@ -63,7 +63,7 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
         expect(dangerfile.status_report).to be_a_hash_containing_exactly(
           errors: [],
           markdowns: [],
-          messages: [],
+          messages: a_collection_containing_exactly(a_kind_of(String)),
           warnings: a_collection_containing_exactly(
             a_string_matching(%r{
               `wrong@example\.com`\sis\snot\sincluded\sin\s<a\shref='https://github\.com/.+>mailmap.*</a>\s

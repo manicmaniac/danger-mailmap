@@ -35,13 +35,19 @@ module Danger
       mailmap = Mailmap::Map.load(path)
       commits_by_emails
         .reject { |email, _| allowed_patterns_include?(email) || mailmap.include_email?(email) }
-        .each do |email, commits|
-          revisions = commits.map(&:sha).join(', ')
-          warn("`#{email}` is not included in #{link_to(path)} (#{revisions})")
-        end
+        .each { |email, commits| warn(format_warning(path, email, commits)) }
+        .empty? or message("See #{HOW_TO_FIX_URL} to know how to fix mailmap warnings.")
     end
 
     private
+
+    HOW_TO_FIX_URL = 'https://github.com/manicmaniac/danger-mailmap#how-to-fix'
+    private_constant :HOW_TO_FIX_URL
+
+    def format_warning(path, email, commits)
+      revisions = commits.map(&:sha).join(', ')
+      "`#{email}` is not included in #{link_to(path)} (#{revisions})"
+    end
 
     def git_working_dir
       @git_working_dir ||= Dir.chdir(env.scm.folder) do

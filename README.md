@@ -49,6 +49,7 @@ mailimap.check
 See `man 5 gitmailmap` or https://git-scm.com/docs/gitmailmap for the detail.
 
 ## How to fix warnings
+<a name="how-to-fix"></a><!-- Do not change this line. This anchor is referenced in lib/danger_plugin.rb -->
 
 If you encountered warnings like *email@example.com is not included in .mailmap*, basically you have 4 options.
 
