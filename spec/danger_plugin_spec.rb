@@ -62,14 +62,28 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
         mailmap.check(mailmap_file.path)
         expect(dangerfile.status_report).to be_a_hash_containing_exactly(
           errors: [],
-          markdowns: [],
-          messages: a_collection_containing_exactly(a_kind_of(String)),
-          warnings: a_collection_containing_exactly(
+          markdowns: [a_kind_of(Danger::Markdown)],
+          messages: [],
+          warnings: [
             a_string_matching(%r{
               `wrong@example\.com`\sis\snot\sincluded\sin\s<a\shref='https://github\.com/.+>mailmap.*</a>\s
               \(#{commits[0].sha},\s#{commits[1].sha},\s#{commits[2].sha}\)
             }x)
-          )
+          ]
+        )
+      end
+    end
+
+    context 'with nil hint_message' do
+      before { mailmap.hint_message = nil }
+
+      it 'does not show hint message' do
+        mailmap.check(mailmap_file.path)
+        expect(dangerfile.status_report).to be_a_hash_containing_exactly(
+          errors: [],
+          markdowns: [],
+          messages: [],
+          warnings: [a_kind_of(String), a_kind_of(String)]
         )
       end
     end
