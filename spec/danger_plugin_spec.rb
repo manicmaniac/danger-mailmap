@@ -74,10 +74,10 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
       end
     end
 
-    context 'with nil instruction_message' do
-      before { mailmap.instruction_message = nil }
+    context 'with nil hint_message' do
+      before { mailmap.hint_message = nil }
 
-      it 'does not show instruction message' do
+      it 'does not show hint message' do
         mailmap.check(mailmap_file.path)
         expect(dangerfile.status_report).to be_a_hash_containing_exactly(
           errors: [],

@@ -26,14 +26,14 @@ module Danger
     # @return [Array<String, Regexp>]
     attr_accessor :allowed_patterns
 
-    # Instruction message that describes how to fix warnings.
-    # If it is set `nil`, {#check} does not show the instruction.
+    # Hint message that describes how to fix warnings.
+    # If it is set `nil`, {#check} does not show the hint.
     # @return [String, nil]
-    attr_accessor :instruction_message
+    attr_accessor :hint_message
 
     def initialize(dangerfile)
       super
-      @instruction_message = "See [the instruction](#{HOW_TO_FIX_URL}) to know how to fix mailmap warnings."
+      @hint_message = "See [the hint](#{HOW_TO_FIX_URL}) to know how to fix mailmap warnings."
     end
 
     # Check whether if an author of each commits has proper email.
@@ -46,7 +46,7 @@ module Danger
       commits_by_emails
         .reject { |email, _| allowed_patterns_include?(email) || mailmap.include_email?(email) }
         .each { |email, commits| warn(format_warning(path, email, commits)) }
-        .empty? or (instruction_message && markdown(instruction_message))
+        .empty? or (hint_message && markdown(hint_message))
     end
 
     private
