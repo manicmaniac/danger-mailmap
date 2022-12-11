@@ -30,7 +30,12 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
     allow(mailmap.git).to receive(:commits).and_return commits
     git_repo = instance_double(Danger::GitRepo)
     allow(git_repo).to receive(:folder).and_return project_root_path.to_s
-    allow(git_repo).to receive(:exec).with('rev-parse --show-toplevel').and_return project_root_path.to_s
+    allow(git_repo).to receive(:exec)
+      .with('rev-parse --show-toplevel')
+      .and_return project_root_path.to_s
+    allow(git_repo).to receive(:exec)
+      .with(a_string_starting_with('diff --no-index'))
+      .and_return ''
     allow(mailmap.env).to receive(:scm).and_return git_repo
   end
 
@@ -70,20 +75,6 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
               \(#{commits[0].sha},\s#{commits[1].sha},\s#{commits[2].sha}\)
             }x)
           ]
-        )
-      end
-    end
-
-    context 'with nil hint_message' do
-      before { mailmap.hint_message = nil }
-
-      it 'does not show hint message' do
-        mailmap.check(mailmap_file.path)
-        expect(dangerfile.status_report).to be_a_hash_containing_exactly(
-          errors: [],
-          markdowns: [],
-          messages: [],
-          warnings: [a_kind_of(String), a_kind_of(String)]
         )
       end
     end
