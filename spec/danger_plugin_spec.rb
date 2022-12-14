@@ -27,6 +27,7 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
     # @see https://github.com/manicmaniac/danger-mailmap/pull/9
     pr_json = JSON.parse(load_fixture('github_pr.json'))
     allow(mailmap.github).to receive(:pr_json).and_return pr_json
+    allow(mailmap.env.request_source).to receive(:pr_json).and_return pr_json
     allow(mailmap.git).to receive(:commits).and_return commits
     git_repo = instance_double(Danger::GitRepo)
     allow(git_repo).to receive(:folder).and_return project_root_path.to_s
@@ -157,6 +158,22 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
             fi
         ' --tag-name-filter cat master...test-danger-mailmap
       SHELL
+    end
+
+    context 'when base branch is missing' do
+      before { allow(mailmap.env.request_source).to receive(:base_branch).and_return nil }
+
+      it 'outputs nothing' do
+        expect(mailmap.send(:filter_branch_script, emails)).to be_nil
+      end
+    end
+
+    context 'when head branch is missing' do
+      before { allow(mailmap.env.request_source).to receive(:head_branch).and_return nil }
+
+      it 'outputs nothing' do
+        expect(mailmap.send(:filter_branch_script, emails)).to be_nil
+      end
     end
   end
 end

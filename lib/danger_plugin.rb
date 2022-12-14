@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'danger_mailmap/request_sources_refinements'
 require 'mailmap'
 require 'set'
 require 'shellwords'
@@ -22,6 +23,8 @@ module Danger
   # @see  manicmaniac/danger-mailmap
   # @tags git, mailmap
   class DangerMailmap < Plugin
+    using ::DangerMailmap::RequestSourcesRefinements
+
     # Regular expression patterns of email where `danger-mailmap` does not warn like allow-list.
     # If a string is set, it is considered as fixed pattern.
     # @return [Array<String, Regexp>]
@@ -132,8 +135,10 @@ module Danger
     end
 
     def filter_branch_script(emails) # rubocop:disable Metrics/MethodLength
-      base = github.pr_json['base']['ref']
-      head = github.pr_json['head']['ref']
+      base = env.request_source.base_branch
+      head = env.request_source.head_branch
+      return unless base && head
+
       script = +"git filter-branch --env-filter '\n"
       emails.each do |email|
         script << indent(4, <<~SHELL)
