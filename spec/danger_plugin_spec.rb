@@ -164,7 +164,7 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
       before { allow(mailmap.env.request_source).to receive(:base_branch).and_return nil }
 
       it 'outputs nothing' do
-        expect(mailmap.send(:filter_branch_script, emails)).to be_nil
+        expect(mailmap.send(:filter_branch_script, emails)).to include '${BASE_COMMIT_HERE}'
       end
     end
 
@@ -172,7 +172,7 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
       before { allow(mailmap.env.request_source).to receive(:head_branch).and_return nil }
 
       it 'outputs nothing' do
-        expect(mailmap.send(:filter_branch_script, emails)).to be_nil
+        expect(mailmap.send(:filter_branch_script, emails)).to include 'HEAD'
       end
     end
   end

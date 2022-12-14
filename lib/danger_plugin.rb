@@ -135,10 +135,8 @@ module Danger
     end
 
     def filter_branch_script(emails) # rubocop:disable Metrics/MethodLength
-      base = env.request_source.base_branch
-      head = env.request_source.head_branch
-      return unless base && head
-
+      base = env.request_source.base_branch || '"${BASE_COMMIT_HERE}"'
+      head = env.request_source.head_branch || 'HEAD'
       script = +"git filter-branch --env-filter '\n"
       emails.each do |email|
         script << indent(4, <<~SHELL)
