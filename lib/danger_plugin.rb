@@ -136,7 +136,7 @@ module Danger
       head = github.pr_json['head']['ref']
       script = +"git filter-branch --env-filter '\n"
       emails.each do |email|
-        script << <<~SHELL
+        script << indent(4, <<~SHELL)
           if [ "$GIT_AUTHOR_EMAIL" = "#{email}" ]; then
               GIT_AUTHOR_EMAIL="correct@example.com"
               GIT_AUTHOR_NAME="Correct Name"
@@ -148,6 +148,10 @@ module Danger
         SHELL
       end
       script << "' --tag-name-filter cat #{base}...#{head}"
+    end
+
+    def indent(size, string)
+      string.lines.map { |line| (' ' * size) + line }.join
     end
   end
 end
