@@ -64,11 +64,16 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
     context 'when commits include both known authors and unknown authors' do
       let(:mailmap_contents) { 'Correct <correct@example.com>' }
 
+      before do
+        formatter = instance_double(DangerMailmap::SuggestionFormatter, suggestion: 'suggestion')
+        allow(DangerMailmap::SuggestionFormatter).to receive(:new).and_return formatter
+      end
+
       it 'warns only about unknown commits' do
         mailmap.check(mailmap_file.path)
         expect(dangerfile.status_report).to be_a_hash_containing_exactly(
           errors: [],
-          markdowns: [a_kind_of(Danger::Markdown)],
+          markdowns: [a_kind_of(Danger::Markdown).and(having_attributes(message: 'suggestion'))],
           messages: [],
           warnings: [
             a_string_matching(%r{
@@ -119,61 +124,6 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
           *commits[0..2].map { |commit| an_object_having_attributes(sha: commit.sha) }
         )
       )
-    end
-  end
-
-  describe '#mailmap_script' do
-    let(:absolute_path) { File.expand_path('.mailmap') }
-    let(:emails) { %w[0@example.com 1@example.com] }
-
-    it 'outputs shell script template' do
-      expect(mailmap.send(:mailmap_script, absolute_path, emails)).to eq <<~SHELL.rstrip
-        echo 'Correct Name <0@example.com>' >> .mailmap
-        echo 'Correct Name <1@example.com>' >> .mailmap
-      SHELL
-    end
-  end
-
-  describe '#filter_branch_script' do
-    let(:emails) { %w[0@example.com 1@example.com] }
-
-    it 'outputs shell script template' do
-      expect(mailmap.send(:filter_branch_script, emails)).to eq <<~SHELL.rstrip
-        git filter-branch --env-filter '
-            if [ "$GIT_AUTHOR_EMAIL" = "0@example.com" ]; then
-                GIT_AUTHOR_EMAIL="correct@example.com"
-                GIT_AUTHOR_NAME="Correct Name"
-            fi
-            if [ "$GIT_COMMITTER_EMAIL" = "0@example.com" ]; then
-                GIT_COMMITTER_EMAIL="correct@example.com"
-                GIT_COMMITTER_NAME="Correct Name"
-            fi
-            if [ "$GIT_AUTHOR_EMAIL" = "1@example.com" ]; then
-                GIT_AUTHOR_EMAIL="correct@example.com"
-                GIT_AUTHOR_NAME="Correct Name"
-            fi
-            if [ "$GIT_COMMITTER_EMAIL" = "1@example.com" ]; then
-                GIT_COMMITTER_EMAIL="correct@example.com"
-                GIT_COMMITTER_NAME="Correct Name"
-            fi
-        ' --tag-name-filter cat master...test-danger-mailmap
-      SHELL
-    end
-
-    context 'when base branch is missing' do
-      before { allow(mailmap.env.request_source).to receive(:base_branch).and_return nil }
-
-      it 'outputs nothing' do
-        expect(mailmap.send(:filter_branch_script, emails)).to include '${BASE_COMMIT_HERE}'
-      end
-    end
-
-    context 'when head branch is missing' do
-      before { allow(mailmap.env.request_source).to receive(:head_branch).and_return nil }
-
-      it 'outputs nothing' do
-        expect(mailmap.send(:filter_branch_script, emails)).to include 'HEAD'
-      end
     end
   end
 end
