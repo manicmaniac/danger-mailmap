@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'bundler/gem_tasks'
+require 'json'
+require 'open-uri'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 
@@ -34,11 +36,28 @@ task :add_test_commits do
   end
 end
 
-file 'spec/support/fixtures/github_pr.json' do |file|
-  require 'json'
-  require 'open-uri'
+file 'spec/support/fixtures/bitbucket_cloud/pr.json' do |file|
+  json = URI.open('https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/bitbucket_cloud_api/pr_response.json').read.slice(/{.+/m)
+  File.write(file.name, JSON.pretty_generate(JSON.parse(json)))
+end
 
+file 'spec/support/fixtures/bitbucket_server/pr.json' do |file|
+  json = URI.open('https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/bitbucket_server_api/pr_response.json').read.slice(/{.+/m)
+  File.write(file.name, JSON.pretty_generate(JSON.parse(json)))
+end
+
+file 'spec/support/fixtures/github/pr.json' do |file|
   json = URI.open('https://api.github.com/repos/manicmaniac/danger-mailmap/pulls/9').read
+  File.write(file.name, JSON.pretty_generate(JSON.parse(json)))
+end
+
+file 'spec/support/fixtures/gitlab/mr.json' do |file|
+  json = URI.open('https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/gitlab_api/merge_request_1_response.json').read.slice(/{.+/m)
+  File.write(file.name, JSON.pretty_generate(JSON.parse(json)))
+end
+
+file 'spec/support/fixtures/vsts/pr.json' do |file|
+  json = URI.open('https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/vsts_api/pr_response.json').read.slice(/{.+/m)
   File.write(file.name, JSON.pretty_generate(JSON.parse(json)))
 end
 
