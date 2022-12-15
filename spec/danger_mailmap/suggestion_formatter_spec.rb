@@ -7,6 +7,15 @@ describe DangerMailmap::SuggestionFormatter do
   let(:base_branch) { 'master' }
   let(:head_branch) { 'test-danger-mailmap' }
 
+  describe '#suggestion' do
+    let(:path) { File.expand_path('.mailmap') }
+    let(:emails) { [] }
+
+    it 'outputs useful suggestion to fix warnings' do
+      expect(formatter.suggestion(path, emails)).not_to be_empty
+    end
+  end
+
   describe '#mailmap_script' do
     let(:absolute_path) { File.expand_path('.mailmap') }
     let(:emails) { %w[0@example.com 1@example.com] }
