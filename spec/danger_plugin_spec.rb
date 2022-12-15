@@ -25,7 +25,7 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
 
   before do
     # @see https://github.com/manicmaniac/danger-mailmap/pull/9
-    pr_json = JSON.parse(load_fixture('github_pr.json'))
+    pr_json = JSON.parse(load_fixture('github/pr.json'))
     allow(mailmap.github).to receive(:pr_json).and_return pr_json
     allow(mailmap.env.request_source).to receive(:pr_json).and_return pr_json
     allow(mailmap.git).to receive(:commits).and_return commits

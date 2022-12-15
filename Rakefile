@@ -42,7 +42,7 @@ file 'spec/support/fixtures/github_pr.json' do |file|
   File.write(file.name, JSON.pretty_generate(JSON.parse(json)))
 end
 
-file 'spec/support/fixtures/git_commits.yml' => ['spec/support/fixtures/github_pr.json'] do |task|
+file 'spec/support/fixtures/git_commits.yml' => ['spec/support/fixtures/github/pr.json'] do |task|
   require 'git'
   require 'yaml'
 
