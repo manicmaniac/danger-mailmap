@@ -25,12 +25,18 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
 
   before do
     # @see https://github.com/manicmaniac/danger-mailmap/pull/9
-    pr_json = JSON.parse(load_fixture('github_pr.json'))
+    pr_json = JSON.parse(load_fixture('github/pr.json'))
     allow(mailmap.github).to receive(:pr_json).and_return pr_json
+    allow(mailmap.env.request_source).to receive(:pr_json).and_return pr_json
     allow(mailmap.git).to receive(:commits).and_return commits
     git_repo = instance_double(Danger::GitRepo)
     allow(git_repo).to receive(:folder).and_return project_root_path.to_s
-    allow(git_repo).to receive(:exec).with('rev-parse --show-toplevel').and_return project_root_path.to_s
+    allow(git_repo).to receive(:exec)
+      .with('rev-parse --show-toplevel')
+      .and_return project_root_path.to_s
+    allow(git_repo).to receive(:exec)
+      .with(a_string_starting_with('diff --no-index'))
+      .and_return ''
     allow(mailmap.env).to receive(:scm).and_return git_repo
   end
 
@@ -58,11 +64,16 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
     context 'when commits include both known authors and unknown authors' do
       let(:mailmap_contents) { 'Correct <correct@example.com>' }
 
+      before do
+        formatter = instance_double(DangerMailmap::SuggestionFormatter, suggestion: 'suggestion')
+        allow(DangerMailmap::SuggestionFormatter).to receive(:new).and_return formatter
+      end
+
       it 'warns only about unknown commits' do
         mailmap.check(mailmap_file.path)
         expect(dangerfile.status_report).to be_a_hash_containing_exactly(
           errors: [],
-          markdowns: [a_kind_of(Danger::Markdown)],
+          markdowns: [a_kind_of(Danger::Markdown).and(having_attributes(message: 'suggestion'))],
           messages: [],
           warnings: [
             a_string_matching(%r{
@@ -72,19 +83,19 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
           ]
         )
       end
-    end
 
-    context 'with nil hint_message' do
-      before { mailmap.hint_message = nil }
+      context 'with show_suggestion = nil' do
+        before { mailmap.show_suggestion = false }
 
-      it 'does not show hint message' do
-        mailmap.check(mailmap_file.path)
-        expect(dangerfile.status_report).to be_a_hash_containing_exactly(
-          errors: [],
-          markdowns: [],
-          messages: [],
-          warnings: [a_kind_of(String), a_kind_of(String)]
-        )
+        it 'does not show suggestion' do
+          mailmap.check(mailmap_file.path)
+          expect(dangerfile.status_report).to be_a_hash_containing_exactly(
+            errors: [],
+            markdowns: [],
+            messages: [],
+            warnings: [a_kind_of(String)]
+          )
+        end
       end
     end
 

@@ -8,3 +8,6 @@ AllCops:
 
 RSpec/ExampleLength:
   Max: 12
+
+RSpec/NestedGroups:
+  Max: 4

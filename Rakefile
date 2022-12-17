@@ -34,15 +34,32 @@ task :add_test_commits do
   end
 end
 
-file 'spec/support/fixtures/github_pr.json' do |file|
-  require 'json'
-  require 'open-uri'
+downloadable_fixtures = {
+  'spec/support/fixtures/bitbucket_cloud/pr.json' =>
+    'https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/bitbucket_cloud_api/pr_response.json',
+  'spec/support/fixtures/bitbucket_server/pr.json' =>
+    'https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/bitbucket_server_api/pr_response.json',
+  'spec/support/fixtures/github/pr.json' =>
+    'https://api.github.com/repos/manicmaniac/danger-mailmap/pulls/9',
+  'spec/support/fixtures/gitlab/mr.json' =>
+    'https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/gitlab_api/merge_request_1_response.json',
+  'spec/support/fixtures/vsts/pr.json' =>
+    'https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/vsts_api/pr_response.json'
+}
 
-  json = URI.open('https://api.github.com/repos/manicmaniac/danger-mailmap/pulls/9').read
-  File.write(file.name, JSON.pretty_generate(JSON.parse(json)))
+downloadable_fixtures.each do |path, url|
+  file path do |task|
+    require 'json'
+    require 'open-uri'
+
+    text = URI.parse(url).open.read
+    # Remove unwanted HTTP headers in JSON files from danger/danger.
+    text = text.slice(/{.+/m)
+    File.write(task.name, JSON.pretty_generate(JSON.parse(text)))
+  end
 end
 
-file 'spec/support/fixtures/git_commits.yml' => ['spec/support/fixtures/github_pr.json'] do |task|
+file 'spec/support/fixtures/git_commits.yml' => ['spec/support/fixtures/github/pr.json'] do |task|
   require 'git'
   require 'yaml'
 
@@ -53,4 +70,9 @@ file 'spec/support/fixtures/git_commits.yml' => ['spec/support/fixtures/github_p
   # Mask working directory and remove trailing spaces.
   yaml = commits.to_yaml.gsub(__dir__, '/tmp/danger-mailmap').gsub(/ +$/, '')
   File.write(task.name, yaml)
+end
+
+namespace :fixtures do
+  desc 'Generate test fixtures'
+  multitask generate: ['spec/support/fixtures/git_commits.yml', *downloadable_fixtures.keys]
 end
