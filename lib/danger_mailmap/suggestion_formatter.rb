@@ -5,6 +5,8 @@ require 'pathname'
 module DangerMailmap
   # A class to format suggestion to fix warnings.
   class SuggestionFormatter
+    using ::DangerMailmap::RequestSourcesRefinements
+
     HOW_TO_FIX_URL = 'https://github.com/manicmaniac/danger-mailmap#how-to-fix'
     private_constant :HOW_TO_FIX_URL
 

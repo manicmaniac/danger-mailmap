@@ -24,8 +24,6 @@ module Danger
   # @see  manicmaniac/danger-mailmap
   # @tags git, mailmap
   class DangerMailmap < Plugin
-    using ::DangerMailmap::RequestSourcesRefinements
-
     # Regular expression patterns of email where `danger-mailmap` does not warn like allow-list.
     # If a string is set, it is considered as fixed pattern.
     # @return [Array<String, Regexp>]
