@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require 'danger_mailmap/request_sources_refinements'
 require 'danger_mailmap/suggestion_formatter'
 require 'mailmap'
 require 'set'
-require 'shellwords'
 
 module Danger
   # A Danger plugin to check if .mailmap has a canonical name of author and committer.

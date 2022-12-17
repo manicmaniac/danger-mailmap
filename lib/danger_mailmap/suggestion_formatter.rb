@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'danger_mailmap/request_sources_refinements'
 require 'pathname'
 
 module DangerMailmap
