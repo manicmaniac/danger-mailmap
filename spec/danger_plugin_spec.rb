@@ -83,6 +83,20 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
           ]
         )
       end
+
+      context 'with show_suggestion = nil' do
+        before { mailmap.show_suggestion = false }
+
+        it 'does not show suggestion' do
+          mailmap.check(mailmap_file.path)
+          expect(dangerfile.status_report).to be_a_hash_containing_exactly(
+            errors: [],
+            markdowns: [],
+            messages: [],
+            warnings: [a_kind_of(String)]
+          )
+        end
+      end
     end
 
     context 'when commits include only known authors' do

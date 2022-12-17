@@ -31,6 +31,15 @@ module Danger
     # @return [Array<String, Regexp>]
     attr_accessor :allowed_patterns
 
+    # If `true`, `danger-mailmap` will add suggestion comments to a pull request (`true` by default).
+    # @return [Boolean]
+    attr_accessor :show_suggestion
+
+    def initialize(*args)
+      super(*args)
+      self.show_suggestion = true
+    end
+
     # Check whether if an author of each commits has proper email.
     #
     # @param [String] path Path to .mailmap file (default $GIT_WORK_TREE/.mailmap).
@@ -42,7 +51,7 @@ module Danger
       return if commits_by_emails.empty?
 
       commits_by_emails.each { |email, commits| warn(format_warning(path, email, commits)) }
-      markdown(suggestion(path, commits_by_emails.keys))
+      markdown(suggestion(path, commits_by_emails.keys)) if show_suggestion
     end
 
     private
