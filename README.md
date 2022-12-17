@@ -6,6 +6,8 @@
 
 A Danger plugin to check if .mailmap has a canonical name of author and committer.
 
+<img width="897" alt="image" src="https://user-images.githubusercontent.com/1672393/208232044-ddc8ce05-9bcb-42d4-9d5e-4d61c2b677a3.png">
+
 ## Installation
 
 ```sh
