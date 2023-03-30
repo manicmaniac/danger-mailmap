@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    danger-mailmap (0.1.0)
+    danger-mailmap (0.2.0)
       danger-plugin-api (~> 1.0)
       mailmap (~> 0.3.0)
 
