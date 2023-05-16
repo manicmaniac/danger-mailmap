@@ -36,7 +36,7 @@ GEM
       terminal-table (>= 1, < 4)
     danger-plugin-api (1.0.0)
       danger (> 2.0)
-    danger-rubocop (0.10.0)
+    danger-rubocop (0.11.0)
       danger
       rubocop (~> 1.0)
     diff-lcs (1.5.0)
@@ -44,7 +44,7 @@ GEM
     faraday (2.7.4)
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
-    faraday-http-cache (2.4.1)
+    faraday-http-cache (2.5.0)
       faraday (>= 0.8)
     faraday-net_http (3.0.2)
     ffi (1.15.5)
