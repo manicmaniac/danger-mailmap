@@ -1,8 +1,8 @@
-name: Test
+name: test
 on: push
 jobs:
   test:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     name: Ruby ${{ matrix.ruby-version }}
     strategy:
       matrix:
