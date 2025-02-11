@@ -31,7 +31,7 @@ describe DangerMailmap::SuggestionFormatter do
   describe '#filter_branch_script' do
     let(:emails) { %w[0@example.com 1@example.com] }
 
-    it 'outputs shell script template' do
+    it 'outputs shell script template' do # rubocop:disable RSpec/ExampleLength
       expect(formatter.filter_branch_script(emails)).to eq <<~SHELL.rstrip
         git filter-branch --env-filter '
             if [ "$GIT_AUTHOR_EMAIL" = "0@example.com" ]; then

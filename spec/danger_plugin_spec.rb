@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Danger::DangerMailmap do
+describe Danger::DangerMailmap do # rubocop:disable RSpec/SpecFilePathFormat
   include DangerPluginHelper
   include FixtureHelper
 
