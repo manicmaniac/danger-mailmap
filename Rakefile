@@ -30,7 +30,7 @@ task :add_test_commits do
       'GIT_COMMITTER_NAME' => c_name,
       'GIT_COMMITTER_EMAIL' => c_email
     }
-    sh(env, 'git', 'commit', '-m' "author: #{a_email}, committer: #{c_email}", '--allow-empty')
+    sh(env, 'git', 'commit', '-m', "author: #{a_email}, committer: #{c_email}", '--allow-empty')
   end
 end
 

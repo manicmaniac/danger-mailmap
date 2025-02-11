@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
+describe Danger::DangerMailmap do # rubocop:disable RSpec/SpecFilePathFormat
   include DangerPluginHelper
   include FixtureHelper
 
   define :be_a_hash_containing_exactly do |expected|
     match do |actual|
-      expect(actual).to be_kind_of(Hash).and have_attributes(size: expected.size).and include expected
+      expect(actual).to be_a(Hash).and have_attributes(size: expected.size).and include expected
     end
   end
 
@@ -131,12 +131,12 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/FilePath
   describe '#commits_by_emails' do
     it 'aggregates commits by author emails and committer emails' do
       expect(mailmap.send(:commits_by_emails)).to be_a_hash_containing_exactly(
-        'correct@example.com' => an_instance_of(Set) & contain_exactly(
-          *commits[1..3].map { |commit| an_object_having_attributes(sha: commit.sha) }
-        ),
-        'wrong@example.com' => an_instance_of(Set) & contain_exactly(
-          *commits[0..2].map { |commit| an_object_having_attributes(sha: commit.sha) }
-        )
+        'correct@example.com' => an_instance_of(Set) & match_array(commits[1..3].map { |commit|
+          an_object_having_attributes(sha: commit.sha)
+        }),
+        'wrong@example.com' => an_instance_of(Set) & match_array(commits[0..2].map { |commit|
+          an_object_having_attributes(sha: commit.sha)
+        })
       )
     end
   end

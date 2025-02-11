@@ -72,8 +72,7 @@ describe DangerMailmap::RequestSourcesRefinements do
 
   describe Danger::RequestSources::LocalOnly do
     before do
-      allow(ci_source).to receive(:base_commit).and_return base
-      allow(ci_source).to receive(:head_commit).and_return head
+      allow(ci_source).to receive_messages(base_commit: base, head_commit: head)
       allow(request_source.scm).to receive(:exec).and_return '0'
     end
 
