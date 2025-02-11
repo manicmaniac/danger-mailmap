@@ -4,10 +4,22 @@ require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 
+task default: :spec
+
 RSpec::Core::RakeTask.new
 RuboCop::RakeTask.new
 
-task default: :spec
+begin
+  require 'steep/rake_task'
+
+  Steep::RakeTask.new
+rescue LoadError
+  # For Ruby 2.7
+  desc 'Run steep check'
+  task :steep do
+    sh 'steep check'
+  end
+end
 
 desc 'Run all linters'
 task lint: %I[rubocop lint_docs]

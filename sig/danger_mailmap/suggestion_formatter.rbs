@@ -1,0 +1,23 @@
+module DangerMailmap
+  class SuggestionFormatter
+    @request_source: Danger::RequestSources::RequestSource & RequestSourcesRefinements
+
+    @git_working_dir: String
+
+    HOW_TO_FIX_URL: String
+
+    def initialize: (Danger::RequestSources::RequestSource request_source, String git_working_dir) -> void
+
+    def suggestion: (String path, Array[String?] emails) -> String
+
+    def mailmap_script: (String path, Array[String?] emails) -> String
+
+    def filter_branch_script: (Array[String?] emails) -> String
+
+    private
+
+    def git_relative_path: (String path) -> String
+
+    def indent: (Integer size, String string) -> String
+  end
+end
