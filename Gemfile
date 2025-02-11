@@ -12,10 +12,12 @@ gem 'guard', '~> 2.18', require: false
 gem 'guard-rspec', '~> 4.7', require: false
 gem 'guard-rubocop', '~> 1.5', require: false
 gem 'rake', '~> 13.2'
+gem 'rbs', '~> 3.0'
 gem 'rspec', '~> 3.13'
 gem 'rubocop', '~> 1.65', require: false
 gem 'rubocop-rake', '~> 0.6', require: false
 gem 'rubocop-rspec', '~> 3.0', require: false
 gem 'simplecov', '~> 0.22', require: false
 gem 'simplecov-lcov', '~> 0.8.0', require: false
+gem 'steep', require: false
 gem 'yard', require: false
