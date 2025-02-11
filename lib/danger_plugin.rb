@@ -32,7 +32,7 @@ module Danger
     attr_accessor :show_suggestion
 
     def initialize(*args)
-      super(*args)
+      super
       self.show_suggestion = true
     end
 
