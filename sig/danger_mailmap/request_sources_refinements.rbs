@@ -1,0 +1,11 @@
+module DangerMailmap
+  module RequestSourcesRefinements
+    attr_accessor scm: Danger::GitRepo
+    attr_accessor ci_source: untyped
+    attr_accessor pr_json: Hash[Symbol | String, untyped]
+    attr_accessor mr_json: untyped
+
+    def base_branch: () -> String?
+    def head_branch: () -> String?
+  end
+end

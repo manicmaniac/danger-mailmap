@@ -1,0 +1,4 @@
+module Cork
+  class Board
+  end
+end

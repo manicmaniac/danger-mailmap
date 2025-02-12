@@ -1,0 +1,22 @@
+module Danger
+  class DangerMailmap < Plugin
+    @git_working_dir: String?
+
+    attr_accessor allowed_patterns: Array[String | Regexp]
+    attr_accessor show_suggestion: bool
+
+    def initialize: (*untyped args) -> void
+    def check: (?String? path) -> void
+
+    private
+
+    def format_warning: (String path, String? email, Enumerable[Git::Object::Commit] commits) -> String
+    def git_working_dir: () -> String
+    def git_relative_path: (String path) -> String
+    def link_to: (String path) -> String
+    def commits_by_unknown_emails: (Mailmap::Map mailmap) -> Hash[String, Set[Git::Object::Commit]]
+    def commits_by_emails: () -> Hash[String, Set[Git::Object::Commit]]
+    def allowed_patterns_include?: (String? email) -> bool?
+    def suggestion: (String path, Array[String] emails) -> String
+  end
+end
