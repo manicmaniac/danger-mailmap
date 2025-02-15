@@ -4,12 +4,6 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/SpecFilePathFormat
   include DangerPluginHelper
   include FixtureHelper
 
-  define :be_a_hash_containing_exactly do |expected|
-    match do |actual|
-      expect(actual).to be_a(Hash).and have_attributes(size: expected.size).and include expected
-    end
-  end
-
   let(:dangerfile) { testing_dangerfile }
   let(:mailmap) { dangerfile.mailmap }
 
@@ -69,32 +63,50 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/SpecFilePathFormat
         allow(DangerMailmap::SuggestionFormatter).to receive(:new).and_return formatter
       end
 
+      it 'does not show errors' do
+        mailmap.check(mailmap_file.path)
+        expect(dangerfile.status_report[:errors]).to be_empty
+      end
+
+      it 'shows suggestion' do
+        mailmap.check(mailmap_file.path)
+        expect(dangerfile.status_report[:markdowns]).to match_array(having_attributes(message: 'suggestion'))
+      end
+
+      it 'does not show messages' do
+        mailmap.check(mailmap_file.path)
+        expect(dangerfile.status_report[:messages]).to be_empty
+      end
+
       it 'warns only about unknown commits' do
         mailmap.check(mailmap_file.path)
-        expect(dangerfile.status_report).to be_a_hash_containing_exactly(
-          errors: [],
-          markdowns: [a_kind_of(Danger::Markdown).and(having_attributes(message: 'suggestion'))],
-          messages: [],
-          warnings: [
-            a_string_matching(%r{
-              `wrong@example\.com`\sis\snot\sincluded\sin\s<a\shref='https://github\.com/.+>mailmap.*</a>\s
-              \(#{commits[0].sha},\s#{commits[1].sha},\s#{commits[2].sha}\)
-            }x)
-          ]
+        expect(dangerfile.status_report[:warnings]).to match_array(
+          a_string_starting_with('`wrong@example.com`')
+            .and(ending_with("#{commits[0].sha}, #{commits[1].sha}, #{commits[2].sha})"))
         )
       end
 
       context 'with show_suggestion = nil' do
         before { mailmap.show_suggestion = false }
 
+        it 'does not show errors' do
+          mailmap.check(mailmap_file.path)
+          expect(dangerfile.status_report[:errors]).to be_empty
+        end
+
         it 'does not show suggestion' do
           mailmap.check(mailmap_file.path)
-          expect(dangerfile.status_report).to be_a_hash_containing_exactly(
-            errors: [],
-            markdowns: [],
-            messages: [],
-            warnings: [a_kind_of(String)]
-          )
+          expect(dangerfile.status_report[:markdowns]).to be_empty
+        end
+
+        it 'does not show messages' do
+          mailmap.check(mailmap_file.path)
+          expect(dangerfile.status_report[:messages]).to be_empty
+        end
+
+        it 'shows a warning' do
+          mailmap.check(mailmap_file.path)
+          expect(dangerfile.status_report[:warnings]).to match_array(a_kind_of(String))
         end
       end
     end
@@ -102,42 +114,63 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/SpecFilePathFormat
     context 'when commits include only known authors' do
       let(:mailmap_contents) { "Correct <correct@example.com>\nWrong <wrong@example.com>" }
 
-      it 'warns nothing' do
+      it 'does not show errors' do
         mailmap.check(mailmap_file.path)
-        expect(dangerfile.status_report).to be_a_hash_containing_exactly(
-          errors: [],
-          markdowns: [],
-          messages: [],
-          warnings: []
-        )
+        expect(dangerfile.status_report[:errors]).to be_empty
+      end
+
+      it 'does not show suggestion' do
+        mailmap.check(mailmap_file.path)
+        expect(dangerfile.status_report[:markdowns]).to be_empty
+      end
+
+      it 'does not show messages' do
+        mailmap.check(mailmap_file.path)
+        expect(dangerfile.status_report[:messages]).to be_empty
+      end
+
+      it 'does not show warnings' do
+        mailmap.check(mailmap_file.path)
+        expect(dangerfile.status_report[:warnings]).to be_empty
       end
     end
 
     context 'when an email matches allowed_patterns' do
       before { mailmap.allowed_patterns = [/correct@.+/, 'wrong@example.com'] }
 
-      it 'warns nothing' do
+      it 'does not show errors' do
         mailmap.check(mailmap_file.path)
-        expect(dangerfile.status_report).to be_a_hash_containing_exactly(
-          errors: [],
-          markdowns: [],
-          messages: [],
-          warnings: []
-        )
+        expect(dangerfile.status_report[:errors]).to be_empty
+      end
+
+      it 'does not show suggestion' do
+        mailmap.check(mailmap_file.path)
+        expect(dangerfile.status_report[:markdowns]).to be_empty
+      end
+
+      it 'does not show messages' do
+        mailmap.check(mailmap_file.path)
+        expect(dangerfile.status_report[:messages]).to be_empty
+      end
+
+      it 'does not show warnings' do
+        mailmap.check(mailmap_file.path)
+        expect(dangerfile.status_report[:warnings]).to be_empty
       end
     end
   end
 
   describe '#commits_by_emails' do
     it 'aggregates commits by author emails and committer emails' do
-      expect(mailmap.send(:commits_by_emails)).to be_a_hash_containing_exactly(
-        'correct@example.com' => an_instance_of(Set) & match_array(commits[1..3].map { |commit|
-          an_object_having_attributes(sha: commit.sha)
-        }),
-        'wrong@example.com' => an_instance_of(Set) & match_array(commits[0..2].map { |commit|
-          an_object_having_attributes(sha: commit.sha)
-        })
-      )
+      commit_shas = commits.map(&:sha)
+      commit_by_emails = mailmap.send(:commits_by_emails)
+      aggregate_failures do
+        expect(commit_by_emails).to be_a(Hash)
+        expect(commit_by_emails.keys).to eq %w[wrong@example.com correct@example.com]
+        expect(commit_by_emails.values).to all(be_a(Set))
+        expect(commit_by_emails['correct@example.com'].map(&:sha)).to eq commit_shas[1..3]
+        expect(commit_by_emails['wrong@example.com'].map(&:sha)).to eq commit_shas[0..2]
+      end
     end
   end
 end
