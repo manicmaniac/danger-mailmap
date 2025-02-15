@@ -122,12 +122,8 @@
     "approved": false,
     "status": "UNAPPROVED"
   },
-  "reviewers": [
-
-  ],
-  "participants": [
-
-  ],
+  "reviewers": [],
+  "participants": [],
   "links": {
     "self": [
       {

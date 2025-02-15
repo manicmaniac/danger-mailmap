@@ -28,14 +28,15 @@
     "events_url": "https://api.github.com/users/manicmaniac/events{/privacy}",
     "received_events_url": "https://api.github.com/users/manicmaniac/received_events",
     "type": "User",
+    "user_view_type": "public",
     "site_admin": false
   },
-  "body": "The commits in this PR is generate by `bundle exec rake add_test_commits`.",
+  "body": "The commits in this PR is generate by `bundle exec rake add_test_commits`.\r\n\r\nYou can use this PR to test `danger-mailmap` locally with the following command.\r\n\r\n```sh\r\nexport DANGER_GITHUB_API_TOKEN=\"$GITHUB_TOKEN\" # substitute your GitHub API token for $GITHUB_TOKEN\r\nbundle exec danger pr https://github.com/manicmaniac/danger-mailmap/pull/9\r\n```",
   "created_at": "2022-12-10T19:30:23Z",
-  "updated_at": "2022-12-11T07:20:28Z",
+  "updated_at": "2025-02-15T03:11:57Z",
   "closed_at": null,
   "merged_at": null,
-  "merge_commit_sha": "4732ac3d65967ae27bbb47b6c542ed7771f6c256",
+  "merge_commit_sha": "9976a29875124f3605871d5de627c183274359a9",
   "assignee": {
     "login": "manicmaniac",
     "id": 1672393,
@@ -54,6 +55,7 @@
     "events_url": "https://api.github.com/users/manicmaniac/events{/privacy}",
     "received_events_url": "https://api.github.com/users/manicmaniac/received_events",
     "type": "User",
+    "user_view_type": "public",
     "site_admin": false
   },
   "assignees": [
@@ -75,29 +77,24 @@
       "events_url": "https://api.github.com/users/manicmaniac/events{/privacy}",
       "received_events_url": "https://api.github.com/users/manicmaniac/received_events",
       "type": "User",
+      "user_view_type": "public",
       "site_admin": false
     }
   ],
-  "requested_reviewers": [
-
-  ],
-  "requested_teams": [
-
-  ],
-  "labels": [
-
-  ],
+  "requested_reviewers": [],
+  "requested_teams": [],
+  "labels": [],
   "milestone": null,
   "draft": true,
   "commits_url": "https://api.github.com/repos/manicmaniac/danger-mailmap/pulls/9/commits",
   "review_comments_url": "https://api.github.com/repos/manicmaniac/danger-mailmap/pulls/9/comments",
   "review_comment_url": "https://api.github.com/repos/manicmaniac/danger-mailmap/pulls/comments{/number}",
   "comments_url": "https://api.github.com/repos/manicmaniac/danger-mailmap/issues/9/comments",
-  "statuses_url": "https://api.github.com/repos/manicmaniac/danger-mailmap/statuses/c96889eb4650049548493a621b711247df77fe9b",
+  "statuses_url": "https://api.github.com/repos/manicmaniac/danger-mailmap/statuses/fd8beb925ded84008f64d96a9c9e2ea86e737de1",
   "head": {
     "label": "manicmaniac:test-danger-mailmap",
     "ref": "test-danger-mailmap",
-    "sha": "c96889eb4650049548493a621b711247df77fe9b",
+    "sha": "fd8beb925ded84008f64d96a9c9e2ea86e737de1",
     "user": {
       "login": "manicmaniac",
       "id": 1672393,
@@ -116,6 +113,7 @@
       "events_url": "https://api.github.com/users/manicmaniac/events{/privacy}",
       "received_events_url": "https://api.github.com/users/manicmaniac/received_events",
       "type": "User",
+      "user_view_type": "public",
       "site_admin": false
     },
     "repo": {
@@ -142,10 +140,11 @@
         "events_url": "https://api.github.com/users/manicmaniac/events{/privacy}",
         "received_events_url": "https://api.github.com/users/manicmaniac/received_events",
         "type": "User",
+        "user_view_type": "public",
         "site_admin": false
       },
       "html_url": "https://github.com/manicmaniac/danger-mailmap",
-      "description": null,
+      "description": "A Danger plugin to check if .mailmap has a canonical name of author and committer.",
       "fork": false,
       "url": "https://api.github.com/repos/manicmaniac/danger-mailmap",
       "forks_url": "https://api.github.com/repos/manicmaniac/danger-mailmap/forks",
@@ -185,14 +184,14 @@
       "releases_url": "https://api.github.com/repos/manicmaniac/danger-mailmap/releases{/id}",
       "deployments_url": "https://api.github.com/repos/manicmaniac/danger-mailmap/deployments",
       "created_at": "2022-09-07T18:44:51Z",
-      "updated_at": "2022-12-10T18:46:42Z",
-      "pushed_at": "2022-12-11T07:19:38Z",
+      "updated_at": "2025-02-15T03:10:05Z",
+      "pushed_at": "2025-02-15T03:11:33Z",
       "git_url": "git://github.com/manicmaniac/danger-mailmap.git",
       "ssh_url": "git@github.com:manicmaniac/danger-mailmap.git",
       "clone_url": "https://github.com/manicmaniac/danger-mailmap.git",
       "svn_url": "https://github.com/manicmaniac/danger-mailmap",
-      "homepage": null,
-      "size": 33,
+      "homepage": "https://www.rubydoc.info/gems/danger-mailmap/0.1.0",
+      "size": 239,
       "stargazers_count": 0,
       "watchers_count": 0,
       "language": "Ruby",
@@ -218,7 +217,10 @@
       "is_template": false,
       "web_commit_signoff_required": false,
       "topics": [
-
+        "danger-plugin",
+        "git",
+        "mailmap",
+        "ruby"
       ],
       "visibility": "public",
       "forks": 0,
@@ -230,7 +232,7 @@
   "base": {
     "label": "manicmaniac:master",
     "ref": "master",
-    "sha": "4ea0303d019d68541c9fcc8a05a2854cc0ab3dc8",
+    "sha": "3bcdd372505acbfe36ab2175afc2ec44b9449579",
     "user": {
       "login": "manicmaniac",
       "id": 1672393,
@@ -249,6 +251,7 @@
       "events_url": "https://api.github.com/users/manicmaniac/events{/privacy}",
       "received_events_url": "https://api.github.com/users/manicmaniac/received_events",
       "type": "User",
+      "user_view_type": "public",
       "site_admin": false
     },
     "repo": {
@@ -275,10 +278,11 @@
         "events_url": "https://api.github.com/users/manicmaniac/events{/privacy}",
         "received_events_url": "https://api.github.com/users/manicmaniac/received_events",
         "type": "User",
+        "user_view_type": "public",
         "site_admin": false
       },
       "html_url": "https://github.com/manicmaniac/danger-mailmap",
-      "description": null,
+      "description": "A Danger plugin to check if .mailmap has a canonical name of author and committer.",
       "fork": false,
       "url": "https://api.github.com/repos/manicmaniac/danger-mailmap",
       "forks_url": "https://api.github.com/repos/manicmaniac/danger-mailmap/forks",
@@ -318,14 +322,14 @@
       "releases_url": "https://api.github.com/repos/manicmaniac/danger-mailmap/releases{/id}",
       "deployments_url": "https://api.github.com/repos/manicmaniac/danger-mailmap/deployments",
       "created_at": "2022-09-07T18:44:51Z",
-      "updated_at": "2022-12-10T18:46:42Z",
-      "pushed_at": "2022-12-11T07:19:38Z",
+      "updated_at": "2025-02-15T03:10:05Z",
+      "pushed_at": "2025-02-15T03:11:33Z",
       "git_url": "git://github.com/manicmaniac/danger-mailmap.git",
       "ssh_url": "git@github.com:manicmaniac/danger-mailmap.git",
       "clone_url": "https://github.com/manicmaniac/danger-mailmap.git",
       "svn_url": "https://github.com/manicmaniac/danger-mailmap",
-      "homepage": null,
-      "size": 33,
+      "homepage": "https://www.rubydoc.info/gems/danger-mailmap/0.1.0",
+      "size": 239,
       "stargazers_count": 0,
       "watchers_count": 0,
       "language": "Ruby",
@@ -351,7 +355,10 @@
       "is_template": false,
       "web_commit_signoff_required": false,
       "topics": [
-
+        "danger-plugin",
+        "git",
+        "mailmap",
+        "ruby"
       ],
       "visibility": "public",
       "forks": 0,
@@ -383,7 +390,7 @@
       "href": "https://api.github.com/repos/manicmaniac/danger-mailmap/pulls/9/commits"
     },
     "statuses": {
-      "href": "https://api.github.com/repos/manicmaniac/danger-mailmap/statuses/c96889eb4650049548493a621b711247df77fe9b"
+      "href": "https://api.github.com/repos/manicmaniac/danger-mailmap/statuses/fd8beb925ded84008f64d96a9c9e2ea86e737de1"
     }
   },
   "author_association": "OWNER",
@@ -394,7 +401,7 @@
   "rebaseable": true,
   "mergeable_state": "clean",
   "merged_by": null,
-  "comments": 1,
+  "comments": 2,
   "review_comments": 0,
   "maintainer_can_modify": false,
   "commits": 4,

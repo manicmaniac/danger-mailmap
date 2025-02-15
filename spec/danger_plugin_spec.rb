@@ -13,7 +13,7 @@ describe Danger::DangerMailmap do # rubocop:disable RSpec/SpecFilePathFormat
     YAML.safe_load(
       load_fixture('git_commits.yml'),
       aliases: true,
-      permitted_classes: [Time] + classes_in(Git, Git::Object)
+      permitted_classes: [Logger, Logger::Formatter, Time] + classes_in(Git, Git::Object)
     )
   end
 

@@ -1,7 +1,14 @@
 ---
 - !ruby/object:Git::Object::Commit
-  base: &1 !ruby/object:Git::Base
-    logger:
+  base: &2 !ruby/object:Git::Base
+    logger: &1 !ruby/object:Logger
+      level: 0
+      progname:
+      default_formatter: !ruby/object:Logger::Formatter
+        datetime_format:
+      formatter:
+      logdev:
+      level_override: {}
     working_directory: !ruby/object:Git::WorkingDirectory
       path: "/tmp/danger-mailmap"
     repository: !ruby/object:Git::Repository
@@ -13,20 +20,20 @@
       git_index_file: "/tmp/danger-mailmap/.git/index"
       git_work_dir: "/tmp/danger-mailmap"
       path:
-      logger:
+      logger: *1
       git_system_env_variables:
         GIT_DIR:
         GIT_WORK_TREE:
         GIT_INDEX_FILE:
         GIT_SSH:
-  objectish: c96889eb4650049548493a621b711247df77fe9b
+  objectish: fd8beb925ded84008f64d96a9c9e2ea86e737de1
   contents:
   trees:
   size:
-  sha: c96889eb4650049548493a621b711247df77fe9b
+  sha: fd8beb925ded84008f64d96a9c9e2ea86e737de1
   tree: !ruby/object:Git::Object::Tree
-    base: *1
-    objectish: facd0ff003e6c2685c2297d240ae2e02913c873d
+    base: *2
+    objectish: 6e58426ef8adc8f034a229fc49ebd65eb7b4de24
     contents:
     trees:
     size:
@@ -35,8 +42,8 @@
     blobs:
   parents:
   - !ruby/object:Git::Object::Commit
-    base: *1
-    objectish: 450ab63f7ce39bedfc61d9bc6e70658082eff547
+    base: *2
+    objectish: 91072f02d9d2536db884da22487fb4f276114439
     contents:
     trees:
     size:
@@ -49,22 +56,22 @@
   author: !ruby/object:Git::Author
     name: Wrong Name
     email: wrong@example.com
-    date: 2022-12-11 16:19:19.000000000 +09:00
+    date: 2025-02-15 12:11:18.000000000 +09:00
   committer: !ruby/object:Git::Author
     name: Wrong Name
     email: wrong@example.com
-    date: 2022-12-11 16:19:19.000000000 +09:00
+    date: 2025-02-15 12:11:18.000000000 +09:00
   message: 'author: wrong@example.com, committer: wrong@example.com'
 - !ruby/object:Git::Object::Commit
-  base: *1
-  objectish: 450ab63f7ce39bedfc61d9bc6e70658082eff547
+  base: *2
+  objectish: 91072f02d9d2536db884da22487fb4f276114439
   contents:
   trees:
   size:
-  sha: 450ab63f7ce39bedfc61d9bc6e70658082eff547
+  sha: 91072f02d9d2536db884da22487fb4f276114439
   tree: !ruby/object:Git::Object::Tree
-    base: *1
-    objectish: facd0ff003e6c2685c2297d240ae2e02913c873d
+    base: *2
+    objectish: 6e58426ef8adc8f034a229fc49ebd65eb7b4de24
     contents:
     trees:
     size:
@@ -73,8 +80,8 @@
     blobs:
   parents:
   - !ruby/object:Git::Object::Commit
-    base: *1
-    objectish: d4d8fec8b9cb293b94b5b70e50800f214f6b9171
+    base: *2
+    objectish: 34b46a5795fc9004f6cdb9db7d20eed4b3404264
     contents:
     trees:
     size:
@@ -87,22 +94,22 @@
   author: !ruby/object:Git::Author
     name: Wrong Name
     email: wrong@example.com
-    date: 2022-12-11 16:19:19.000000000 +09:00
+    date: 2025-02-15 12:11:18.000000000 +09:00
   committer: !ruby/object:Git::Author
     name: Correct Name
     email: correct@example.com
-    date: 2022-12-11 16:19:19.000000000 +09:00
+    date: 2025-02-15 12:11:18.000000000 +09:00
   message: 'author: wrong@example.com, committer: correct@example.com'
 - !ruby/object:Git::Object::Commit
-  base: *1
-  objectish: d4d8fec8b9cb293b94b5b70e50800f214f6b9171
+  base: *2
+  objectish: 34b46a5795fc9004f6cdb9db7d20eed4b3404264
   contents:
   trees:
   size:
-  sha: d4d8fec8b9cb293b94b5b70e50800f214f6b9171
+  sha: 34b46a5795fc9004f6cdb9db7d20eed4b3404264
   tree: !ruby/object:Git::Object::Tree
-    base: *1
-    objectish: facd0ff003e6c2685c2297d240ae2e02913c873d
+    base: *2
+    objectish: 6e58426ef8adc8f034a229fc49ebd65eb7b4de24
     contents:
     trees:
     size:
@@ -111,8 +118,8 @@
     blobs:
   parents:
   - !ruby/object:Git::Object::Commit
-    base: *1
-    objectish: 1ccf54a111d8b3b4238232f699b589dbe8914f58
+    base: *2
+    objectish: 1f121767cd377432a77b61de62ad0478588642b7
     contents:
     trees:
     size:
@@ -125,22 +132,22 @@
   author: !ruby/object:Git::Author
     name: Correct Name
     email: correct@example.com
-    date: 2022-12-11 16:19:19.000000000 +09:00
+    date: 2025-02-15 12:11:18.000000000 +09:00
   committer: !ruby/object:Git::Author
     name: Wrong Name
     email: wrong@example.com
-    date: 2022-12-11 16:19:19.000000000 +09:00
+    date: 2025-02-15 12:11:18.000000000 +09:00
   message: 'author: correct@example.com, committer: wrong@example.com'
 - !ruby/object:Git::Object::Commit
-  base: *1
-  objectish: 1ccf54a111d8b3b4238232f699b589dbe8914f58
+  base: *2
+  objectish: 1f121767cd377432a77b61de62ad0478588642b7
   contents:
   trees:
   size:
-  sha: 1ccf54a111d8b3b4238232f699b589dbe8914f58
+  sha: 1f121767cd377432a77b61de62ad0478588642b7
   tree: !ruby/object:Git::Object::Tree
-    base: *1
-    objectish: facd0ff003e6c2685c2297d240ae2e02913c873d
+    base: *2
+    objectish: 6e58426ef8adc8f034a229fc49ebd65eb7b4de24
     contents:
     trees:
     size:
@@ -149,8 +156,8 @@
     blobs:
   parents:
   - !ruby/object:Git::Object::Commit
-    base: *1
-    objectish: 4ea0303d019d68541c9fcc8a05a2854cc0ab3dc8
+    base: *2
+    objectish: ab08405c141d65bbee6e00f3f552354d4a5ac217
     contents:
     trees:
     size:
@@ -163,9 +170,9 @@
   author: !ruby/object:Git::Author
     name: Correct Name
     email: correct@example.com
-    date: 2022-12-11 16:19:19.000000000 +09:00
+    date: 2025-02-15 12:11:18.000000000 +09:00
   committer: !ruby/object:Git::Author
     name: Correct Name
     email: correct@example.com
-    date: 2022-12-11 16:19:19.000000000 +09:00
+    date: 2025-02-15 12:11:18.000000000 +09:00
   message: 'author: correct@example.com, committer: correct@example.com'
