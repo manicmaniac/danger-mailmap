@@ -35,9 +35,7 @@
   },
   "title": "This is a danger test for bitbucket cloud",
   "close_source_branch": false,
-  "reviewers": [
-
-  ],
+  "reviewers": [],
   "destination": {
     "commit": {
       "hash": "9c823062cf99",
