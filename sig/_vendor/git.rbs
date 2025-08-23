@@ -1,0 +1,37 @@
+module Git
+  class Author
+    attr_accessor name: String?
+    attr_accessor email: String?
+    attr_accessor date: Time?
+  end
+
+  class Log
+  end
+
+  class Object
+    class AbstractObject
+      def sha: () -> String
+      def size: () -> Integer
+      def to_s: () -> String
+      def tree?: () -> false
+      def blob?: () -> false
+      def commit?: () -> false
+      def contents: () { (File) -> void } -> void
+                  | () -> String
+      def contents_array: () -> Array[String]
+      def tag?: () -> false
+    end
+
+    class Commit < AbstractObject
+      def author: () -> Author
+      def author_date: () -> Time?
+      def commit?: () -> true
+      def committer: () -> Author
+      def committer_date: () -> Time?
+      def message: () -> String
+      def name: () -> String
+      def parent: () -> Commit?
+      def parents: () -> Array[Commit]
+    end
+  end
+end

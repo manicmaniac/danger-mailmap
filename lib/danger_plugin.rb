@@ -33,6 +33,7 @@ module Danger
 
     def initialize(*args)
       super
+      self.allowed_patterns = []
       self.show_suggestion = true
     end
 
@@ -69,7 +70,9 @@ module Danger
 
     def link_to(path)
       relative_path = git_relative_path(path)
-      scm_plugin = @dangerfile.respond_to?(danger.scm_provider) ? @dangerfile.public_send(danger.scm_provider) : nil
+      scm_plugin = if @dangerfile.respond_to?(danger.scm_provider)
+                     @dangerfile.public_send(danger.scm_provider)
+                   end #: DangerfileGitPlugin?
       method_name = %i[markdown_link html_link].detect { |name| scm_plugin.respond_to?(name) }
       method_name ? scm_plugin.public_send(method_name, relative_path, full_path: false) : relative_path
     end
@@ -79,18 +82,21 @@ module Danger
     end
 
     def commits_by_emails
+      # @type var commits_by_emails: Hash[String, Set[Git::Object::Commit]]
       commits_by_emails = Hash.new do |hash, key|
         hash[key] = Set.new
       end
       git.commits.each do |commit|
-        commits_by_emails[commit.author.email] << commit
-        commits_by_emails[commit.committer.email] << commit
+        author_email = commit.author.email
+        commits_by_emails[author_email] << commit if author_email
+        committer_email = commit.committer.email
+        commits_by_emails[committer_email] << commit if committer_email
       end
       commits_by_emails
     end
 
     def allowed_patterns_include?(email)
-      allowed_patterns&.any? do |pattern|
+      allowed_patterns.any? do |pattern|
         if pattern.is_a?(Regexp)
           email =~ pattern
         else

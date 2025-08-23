@@ -1,0 +1,127 @@
+module Danger
+  class Dangerfile
+  end
+
+  class EnvironmentManager
+    attr_accessor ci_source: CI
+    attr_accessor request_source: RequestSources::RequestSource
+    attr_accessor scm: GitRepo
+    attr_accessor ui: Cork::Board
+    attr_accessor danger_id: String
+
+    def self.pr?: (Hash[String, String] env) -> bool
+    def self.danger_head_branch: () -> 'danger_head'
+    def self.danger_base_branch: () -> 'danger_base'
+
+    def initialize: (Hash[String, String] env, ?Cork::Board? ui, ?String? danger_id) -> void
+    def pr?: () -> bool
+    def meta_info_for_head: () -> String
+    def meta_info_for_base: () -> String
+  end
+
+  class GitRepo
+    attr_accessor diff: untyped
+    attr_accessor log: untyped
+    attr_accessor folder: String
+
+    def diff_for_folder: (String folder, ?from: String, ?to: String, ?lookup_top_level: bool) -> Git::Log
+    def renamed_files: () -> Array[{ before: String, after: String }]
+    def exec: (String string) -> String
+    def head_commit: () -> String
+    def tags: () -> String
+    def origins: () -> String
+    def ensure_commitish_exists!: (untyped commitish) -> void
+    def ensure_commitish_exists_on_branch!: (untyped branch, untyped commitish) -> void
+  end
+
+  class CI
+    def self.inherited: (Class child_class) -> void
+    def self.available_ci_sources: () -> Set[bot]
+    def self.validates_as_ci?: (untyped _env) -> bot
+    def self.validates_as_pr?: (untyped _env) -> bot
+
+    def initialize: (untyped env) -> bot
+    def supported_request_sources: () -> bot
+    def supports?: (untyped request_source) -> bool
+  end
+
+  module RequestSources
+    class RequestSource
+      DANGER_REPO_NAME: 'danger'
+
+      attr_accessor ci_source: CI
+      attr_accessor scm: GitRepo?
+      attr_accessor host: String?
+      attr_accessor ignored_violations: Array[bot]
+
+      def self.env_vars: () -> bot
+      def self.optional_env_vars: () -> []
+      def self.inherited: (Class child_class) -> void
+      def self.available_request_sources: () -> Set[bot]
+      def self.source_name: () -> String
+      def self.available_source_name_and_envs: () -> Array[String]
+
+      def initialize: (CI _ci_source, untyped _environment) -> void
+      def validates_as_ci?: () -> bool
+      def validates_as_api_source?: () -> bot
+      def update_pull_request!: (_warnings: Array[untyped], _errors: Array[untyped], _messages: Array[untyped], _markdowns: Array[untyped]) -> bot
+      def setup_danger_branches: () -> bot
+      def fetch_details: () -> bot
+      def organisation: () -> bot
+      def file_url: (?_organization: untyped, ?_repository: untyped, ?_ref: untyped, ?_branch: untyped, ?_pattern: untyped) -> bot
+      def update_build_status: (untyped _status) -> bot
+    end
+
+    class BitbucketServer < RequestSource
+    end
+
+    class GitHub < RequestSource
+    end
+
+    class VSTS < RequestSource
+    end
+
+    class GitLab < RequestSource
+    end
+
+    class BitbucketCloud < RequestSource
+    end
+
+    class LocalOnly < RequestSource
+    end
+  end
+
+  class Plugin
+    # Delegates to Danger::Dangerfile
+    attr_accessor env: EnvironmentManager
+
+    @dangerfile: Dangerfile
+
+    # Delegates to Danger::DangerfileMessagingPlugin
+    def markdown: (*String markdowns, **Hash[Symbol, untyped] options) -> void
+    def warn: (*String warnings, **Hash[Symbol, untyped] options) -> void
+
+    def git: () -> DangerfileGitPlugin
+    def danger: () -> DangerfileDangerPlugin
+  end
+
+  class DangerfileDangerPlugin < Plugin
+    def self.instance_name: () -> 'danger'
+
+    def import_plugin: (String path_or_url) -> void
+    def import_dangerfile: (
+      {
+        ?github: String,
+        ?gitlab: String,
+        ?gem: String,
+        ?ref: String,
+        ?path: String,
+      }
+    ) -> void
+    def scm_provider: () -> (:github | :gitlab | :bitbucket_server | :bitbucket_cloud | :vsts | :unknown)
+  end
+
+  class DangerfileGitPlugin < Plugin
+    def commits: () -> Array[Git::Object::Commit]
+  end
+end
