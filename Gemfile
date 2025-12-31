@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'bundler', '~> 2.0'
+gem 'bundler', '~> 4.0'
 gem 'byebug'
 gem 'danger', '~> 9.5'
 gem 'danger-rubocop', '~> 0.13', require: false
